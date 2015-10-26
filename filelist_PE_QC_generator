@@ -1,0 +1,26 @@
+#To execute this the trimmomaticPE_QC.sh shell script, you need to create filelist_PE_QC.txt using trimmomatic.files.R, 
+#which contains a list of the forward and reverse reads, but without the suffix "_L001_R1_001.fastq" or "_L001_R2_001.fastq#Load R on the MSU HPCC
+module load R
+R
+
+#This code can be found in trimmomatic.files.R:
+
+library("stringr")
+library("plyr")
+
+filenames <- system("ls *fastq*", intern=T)
+
+forward="R1"
+reverse="R2"
+
+R1_idx <- grep(forward, filenames)
+R1_files <- filenames[R1_idx]
+
+R2_idx <- grep(reverse, filenames)
+R2_files <- filenames[R2_idx]
+
+filenames.fin <- data.frame(R1_files, R2_files)
+
+QC.files <- data.frame(group=ldply(str_split(filenames.fin[,1], "16S"))$V1, filenames.fin)
+
+write.table(QC.files[,2], "filelist_PE_QC.txt", sep = "\t", row.names=F, col.names=F, quote=F)
