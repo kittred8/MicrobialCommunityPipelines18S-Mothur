@@ -99,7 +99,7 @@ R2_files <- filenames[R2_idx]
 
 filenames.fin <- data.frame(R1_files, R2_files)
 
-QC.files <- data.frame(group=ldply(str_split(filenames.fin[,1], "16S"))$V1, filenames.fin)
+QC.files <- data.frame(group=ldply(str_split(filenames.fin[,1], "18S"))$V1, filenames.fin)
 
 write.table(QC.files[,2], "filelist_PE_QC.txt", sep = "\t", row.names=F, col.names=F, quote=F)
 
